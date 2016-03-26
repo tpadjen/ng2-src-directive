@@ -1,0 +1,57 @@
+{
+  "name": "ng2-src-directive",
+  "description": "An Angular2 src directive for any component",
+  "scripts": {
+    "build": "tsc && node make.js",
+    "test": "tsc && karma start",
+    "test-watch": "tsc && karma start --no-single-run --auto-watch",
+    "commit": "npm run prepublish && npm test && git-cz",
+    "typings": "rimraf typings && typings i",
+    "prepublish": "npm run build",
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ocombe/ng2-src-directive.git"
+  },
+  "keywords": [
+    "angular",
+    "angular2",
+    "translate",
+    "i18n"
+  ],
+  "author": "Olivier Combe",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ocombe/ng2-src-directive/issues"
+  },
+  "main": "src.js",
+  "typings": "./src.d.ts",
+  "peerDependencies": {
+    "angular2": ">= 2.0.0-beta.0",
+    "es6-promise": ">= 3.0.2",
+    "es6-shim": ">= 0.33.3",
+    "reflect-metadata": ">= 0.1.2",
+    "rxjs": ">= 5.0.0-beta.0",
+    "zone.js": ">= 0.5.10"
+  },
+  "devDependencies": {
+    "angular2": "2.0.0-beta.12",
+    "commitizen": "~2.5.0",
+    "cz-conventional-changelog": "~1.1.4",
+    "es6-promise": "^3.0.2",
+    "es6-shim": "^0.35.0",
+    "reflect-metadata": "0.1.2",
+    "rimraf": "^2.5.2",
+    "rxjs": "5.0.0-beta.2",
+    "semantic-release": "~4.3.5",
+    "systemjs": "~0.19.24",
+    "systemjs-builder": "^0.15.13",
+    "typescript": "^1.z8.9",
+    "typings": "^0.6.8",
+    "zone.js": "^0.6.6"
+  },
+  "czConfig": {
+    "path": "node_modules/cz-conventional-changelog"
+  }
+}
