@@ -7,10 +7,7 @@ import {
   OnDestroy
 } from 'angular2/core';
 import {Http, Response} from 'angular2/http';
-import {
-  Sourcable,
-  implementsSourcable
-} from './sourcable';
+import {Sourcable} from './sourcable';
 import {Observable} from 'rxjs/Observable';
 import {Subject} from 'rxjs/Subject';
 import 'rxjs/add/observable/empty';
@@ -37,18 +34,6 @@ export class SrcDirective implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.host = <Sourcable>this._viewManager.getComponent(this._element);
-
-    if (implementsSourcable(this.host)) {
-      this._handleSourceChanges();
-    } else { // is not a proper Sourcable host
-      let tagName = this._element.nativeElement.localName;
-      let validSrcTags = ['img', 'script'];
-      if (validSrcTags.indexOf(tagName) === -1) {
-        console.warn(tagName +
-          " has a src directive but the component does not implement the Sourcable interface.");
-        }
-    }
-
   }
 
   /**
@@ -72,22 +57,27 @@ export class SrcDirective implements OnInit, OnDestroy {
 
   _handleSourceChanges() {
      this._subscription = this.sourceChanged
-      .do(source => this.host.sourceChanged(source))
+      .do(source => { if (this.host.sourceChanged) this.host.sourceChanged(source) })
       .filter(source => { return this._emptySources(source); })
       .map(source => { return this._addExtensionMatches(source); })
       .filter(req => { return this._nonFiles(req); })
       .distinctUntilChanged()
-      .do(req => this.host.sourceLoading(req.source))
+      .do(req => { if (this.host.sourceLoading) this.host.sourceLoading(req.source) })
       .debounceTime(this.debounceTime)
       .switchMap(req => { return this._fetchSrc(req); })
       .catch((error) => {
-        this.host.sourceError(error);
+        if (this.host.sourceError) this.host.sourceError(error);
         console.error(error);
         return Observable.empty();
       })
       .subscribe(
-        (res: Response) => { this.host.sourceReceived(res); },
-        error => { this._handleResponseError(error); }
+        (res: Response) => { 
+          if (this.host.sourceReceived) this.host.sourceReceived(res); 
+        },
+        error => { 
+          if (this.host.sourceError) this.host.sourceError(error);
+          console.error(error);
+        }
       );
   }
 
@@ -124,10 +114,6 @@ export class SrcDirective implements OnInit, OnDestroy {
                   this.host.sourceError({message: `${req.source} not found.`});
                   return Observable.empty();
                 });
-  }
-
-  _handleResponseError(error) {
-    console.error(error);
   }
 
 }
