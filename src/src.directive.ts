@@ -6,6 +6,7 @@ import {
   OnInit,
   OnDestroy
 } from 'angular2/core';
+import {DomAdapter} from 'angular2/src/platform/dom/dom_adapter';
 import {Http, Response} from 'angular2/http';
 import {Sourcable} from './sourcable';
 import {Observable} from 'rxjs/Observable';
@@ -30,6 +31,7 @@ export class SrcDirective implements OnInit, OnDestroy {
   constructor(
     private _element: ElementRef,
     private _viewManager: AppViewManager,
+    private _domAdapter: DomAdapter,
     private _http: Http) { }
 
   ngOnInit() {
@@ -72,7 +74,11 @@ export class SrcDirective implements OnInit, OnDestroy {
       })
       .subscribe(
         (res: Response) => { 
-          if (this.host.sourceReceived) this.host.sourceReceived(res); 
+          if (this.host.sourceReceived) {
+            this.host.sourceReceived(res);
+          } else {
+            this._domAdapter.setProperty(<any>this.host, 'innerHtml', res.text());
+          }
         },
         error => { 
           if (this.host.sourceError) this.host.sourceError(error);
