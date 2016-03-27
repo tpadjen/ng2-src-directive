@@ -1,6 +1,9 @@
 import {SrcDirective as Source} from './src/src.directive';
 
-export {SrcDirective as Source} from './src/src.directive';
+export {
+  SrcDirective as Source,
+  SourceDebounceTime
+} from './src/src.directive';
 export {
   OnSourceChanged,
   OnSourceError,

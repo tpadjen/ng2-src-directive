@@ -2,9 +2,11 @@ import {
   AppViewManager,
   Directive,
   ElementRef,
+  Inject,
   Input,
   OnInit,
-  OnDestroy
+  OnDestroy,
+  Optional
 } from 'angular2/core';
 import {DomAdapter} from 'angular2/src/platform/dom/dom_adapter';
 import {Http, Response} from 'angular2/http';
@@ -21,6 +23,7 @@ import 'rxjs/add/operator/retry';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/switchMap';
 
+export declare const SourceDebounceTime: number;
 
 @Directive({selector: '[src]'})
 export class SrcDirective implements OnInit, OnDestroy {
@@ -32,10 +35,12 @@ export class SrcDirective implements OnInit, OnDestroy {
     private _element: ElementRef,
     private _viewManager: AppViewManager,
     private _domAdapter: DomAdapter,
-    private _http: Http) { }
+    private _http: Http,
+    @Optional() @Inject('SourceDebounceTime') private _sourceDebounceTime) { }
 
   ngOnInit() {
     this.host = <Sourcable>this._viewManager.getComponent(this._element);
+    if (this._sourceDebounceTime) this.debounceTime = this._sourceDebounceTime;
   }
 
   /**
@@ -52,7 +57,7 @@ export class SrcDirective implements OnInit, OnDestroy {
   get debounceTime(): number | any {
     return this._debounceTime;
   }
-  _debounceTime: number = 300;
+  _debounceTime: number = 200;
 
   sourceChanged: Subject<string> = new Subject();
   _subscription;

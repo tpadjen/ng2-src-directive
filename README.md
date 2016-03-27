@@ -109,3 +109,25 @@ export class MyComponent implements OnSourceChanged,
 
 }
 ```
+
+## Debounce Time
+
+The `Source` directive automatically throttles http requests it sends out on `src` changes to prevent overwhelming the server. The default waiting time is 200 ms. There are two ways to change this.
+
+1. Set the `debounceTime` attribute to a number of milliseconds on an element:
+```html
+<p src="remote/source.html" debounceTime="100"></p>
+```
+2. Provide `SourceDebounceTime` with a number of milliseconds:
+```ts
+import {Component, provide} from 'angular2/core'
+import {Source, SourceDebounceTime} from 'ng2-src-directive/src';
+
+@Component({
+  ...
+  providers: [
+    provide(SourceDebounceTime, {useValue: 100})
+  ]
+})
+```
+`SourceDebounceTime` can be provided at any level of the app.
