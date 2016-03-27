@@ -61,6 +61,7 @@ export class SrcDirective implements OnInit, OnDestroy {
 
   sourceChanged: Subject<string> = new Subject();
   _subscription;
+  _firstRequest: boolean = true;
 
   _handleSourceChanges() {
      this._subscription = this.sourceChanged
@@ -70,7 +71,8 @@ export class SrcDirective implements OnInit, OnDestroy {
       .filter(req => { return this._nonFiles(req); })
       .distinctUntilChanged()
       .do(req => { if (this.host.sourceLoading) this.host.sourceLoading(req.source) })
-      .debounceTime(this.debounceTime)
+      .debounceTime(this._firstRequest ? 0 : this.debounceTime)
+      .do(() => this._firstRequest = false)
       .switchMap(req => { return this._fetchSrc(req); })
       .catch((error) => {
         if (this.host.sourceError) this.host.sourceError(error);
