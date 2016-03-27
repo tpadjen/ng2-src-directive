@@ -1,4 +1,4 @@
-import {SrcDirective} from './src/src.directive';
+import {SrcDirective as Source} from './src/src.directive';
 
 export {SrcDirective as Source} from './src/src.directive';
 export {
@@ -11,5 +11,5 @@ export {
 
 // for angular-cli
 export default {
-    directives: [SrcDirective]
+    directives: [Source]
 }
