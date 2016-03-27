@@ -29,28 +29,44 @@ export class MyComponent {
 
 ## Lifecycle Events
 
-Several lifecycle hooks are provided to allow your component to respond to source lifecycle events with more granularity. The available hooks are:
+Lifecycle hooks are provided to allow your component to respond to source events with more granularity. The available hooks are:
 
 * `sourceChanged(url: string)`: The value of the src attribute has changed, kicking off validation and fetching of the remote resource.
 * `sourceLoading(url: string)`: The src attribute has been validated (not null) and the resource is being fetched
 * `sourceError(string)`: An error occured while fetching the file, such as `file not found`.
-* `sourceReceived(Response)`: The source was fetched successfully. the `Response` is the result from the angular2 `Http` get.
+* `sourceReceived(Response)`: The source was fetched successfully. the `Response` is the result from the angular2 `Http` get. If a `sourceReceived` implementation is provided on your component the source directive will no longer automatically set the innerHtml of the element to the reponse text. It is your responsibility and prerogative to handle the response.
 
-All hooks are optional. If `sourceReceived` is provided, the source directive will not automatically set the innerHtml of the element to the reponse text. It is your responsibility and prerogative to handle the response.
+The hooks each have a recommended corresponding interface that can be implemented by the component class for type checking. They are:
+
+* `OnSourceChanged`
+* `OnSourceLoading`
+* `OnSourceError`
+* `OnSourceReceived`
 
 ### Usage
 
-In your component that will use src import the `Source` directive, optionally the `Sourcable` interface, and the `Response` you will receive. Include `Source` in the component's `directives` array. Have your component `implement` `Sourcable` if you want type checking.
+In your component that will use src import the `Source` directive, optionally one or more source interfaces, and the `Response` you will receive. Include `Source` in the component's `directives` array. Have your component `implement` the interface(s) if you want type checking.
 
 ```ts
-import {Source, Sourcable, Response} from 'ng2-src-directive/src';
+import {Component} from 'angular2/core';
+import {
+  Source,
+  OnSourceChanged,
+  OnSourceLoading,
+  OnSourceError,
+  OnSourceReceived,
+  Response
+} from 'ng2-src-directive/src';
 
 @Component({
   selector: 'my-component'
   directives: [Source],
   ...
 })
-export class MyComponent implements Sourcable {
+export class MyComponent implements OnSourceChanged,
+                                    OnSourceLoading,
+                                    OnSourceError,
+                                    OnSourceReceived {
   
 }
 ```
@@ -65,10 +81,13 @@ template: [`
 
 ```
 
-Implement any `Sourcable` method on your component.
+Implement any method on your component.
 
 ```ts
-export class MyComponent implements Sourcable {
+export class MyComponent implements OnSourceChanged,
+                                    OnSourceLoading,
+                                    OnSourceError,
+                                    OnSourceReceived {
   
   constructor(private _el: ElementRef) { }
 
@@ -81,7 +100,7 @@ export class MyComponent implements Sourcable {
   }
 
   sourceError(error: string) {
-    console.log(error);
+    console.error(error);
   }
 
   sourceReceived(res: Response) {
