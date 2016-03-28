@@ -6,9 +6,9 @@ import {
   Input,
   OnInit,
   OnDestroy,
-  Optional
+  Optional,
+  Renderer
 } from 'angular2/core';
-import {DOM} from 'angular2/platform/common_dom';
 import {Http, Response} from 'angular2/http';
 import {Sourcable} from './sourcable';
 import {Observable} from 'rxjs/Observable';
@@ -35,6 +35,7 @@ export class SrcDirective implements OnInit, OnDestroy {
     private _element: ElementRef,
     private _viewManager: AppViewManager,
     private _http: Http,
+    private _renderer: Renderer,
     @Optional() @Inject('SourceDebounceTime') private _sourceDebounceTime) { }
 
   ngOnInit() {
@@ -83,7 +84,7 @@ export class SrcDirective implements OnInit, OnDestroy {
           if (this.host.sourceReceived) {
             this.host.sourceReceived(res);
           } else {
-            DOM.setProperty(<any>this.host, 'innerHtml', res.text());
+            this._renderer.setElementProperty(<any>this.host, 'innerHtml', res.text());
           }
         },
         error => {
