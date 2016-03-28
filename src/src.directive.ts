@@ -61,7 +61,7 @@ export class SrcDirective implements OnInit, OnDestroy {
   get debounceTime(): number | any {
     return this._debounceTime;
   }
-  _debounceTime: number = 200;
+  _debounceTime: number = 300;
 
   sourceChanged: Subject<string> = new Subject();
   _subscription;
