@@ -65,12 +65,12 @@ export class SrcDirective implements OnInit, OnDestroy {
 
   _handleSourceChanges() {
      this._subscription = this.sourceChanged
-      .do(source => { if (this.host.sourceChanged) this.host.sourceChanged(source) })
+      .do(source => { if (this.host.sourceChanged) this.host.sourceChanged(source); })
       .filter(source => { return this._emptySources(source); })
       .map(source => { return this._addExtensionMatches(source); })
       .filter(req => { return this._nonFiles(req); })
       .distinctUntilChanged()
-      .do(req => { if (this.host.sourceLoading) this.host.sourceLoading(req.source) })
+      .do(req => { if (this.host.sourceLoading) this.host.sourceLoading(req.source); })
       .debounceTime(this._firstRequest ? 0 : this.debounceTime)
       .do(() => this._firstRequest = false)
       .switchMap(req => { return this._fetchSrc(req); })
@@ -80,14 +80,14 @@ export class SrcDirective implements OnInit, OnDestroy {
         return Observable.empty();
       })
       .subscribe(
-        (res: Response) => { 
+        (res: Response) => {
           if (this.host.sourceReceived) {
             this.host.sourceReceived(res);
           } else {
             this._domAdapter.setProperty(<any>this.host, 'innerHtml', res.text());
           }
         },
-        error => { 
+        error => {
           if (this.host.sourceError) this.host.sourceError(error);
           console.error(error);
         }
