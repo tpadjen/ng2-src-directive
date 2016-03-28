@@ -116,9 +116,13 @@ export class SrcDirective implements OnInit, OnDestroy {
   _nonFiles(req) {
     if (!req.extMatches) {
       if (req.source && req.source.length > 0) {
-        this.host.sourceError({message: `${req.source} is not a file.`});
+        if (this.host.sourceError) {
+          this.host.sourceError({message: `${req.source} is not a file.`});
+        }
       } else {
-        this.host.sourceError({message: `No source file given.`});
+        if (this.host.sourceError) {
+          this.host.sourceError({message: `No source file given.`});
+        }
       }
       return false;
     }
@@ -128,7 +132,9 @@ export class SrcDirective implements OnInit, OnDestroy {
   _fetchSrc(req) {
     return this._http.get(req.source)
                 .catch((error) => {
-                  this.host.sourceError({message: `${req.source} not found.`});
+                  if (this.host.sourceError) {
+                    this.host.sourceError({message: `${req.source} not found.`});
+                  }
                   return Observable.empty();
                 });
   }
