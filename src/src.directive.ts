@@ -87,7 +87,8 @@ export class SrcDirective implements OnInit, OnDestroy {
           if (this.host.sourceReceived) {
             this.host.sourceReceived(res);
           } else {
-            this._renderer.setElementProperty(<any>this.host, 'innerHtml', res.text());
+            this._renderer.setElementProperty(
+              this._element.nativeElement, 'innerHTML', res.text());
           }
         },
         error => {
