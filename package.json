@@ -1,6 +1,6 @@
 {
   "name": "ng2-src-directive",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "An Angular2 src directive for any component",
   "scripts": {
     "build": "tsc && node make.js",
