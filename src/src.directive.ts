@@ -24,7 +24,7 @@ import 'rxjs/add/operator/retry';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/switchMap';
 
-export declare const SourceDebounceTime: number;
+export var SourceDebounceTime: number = 300;
 
 @Directive({selector: '[src]'})
 export class SrcDirective implements OnInit, OnDestroy {
@@ -37,7 +37,7 @@ export class SrcDirective implements OnInit, OnDestroy {
     private _viewManager: AppViewManager,
     private _http: Http,
     private _renderer: Renderer,
-    @Optional() @Inject('SourceDebounceTime') private _sourceDebounceTime) { }
+    @Optional() @Inject(SourceDebounceTime) private _sourceDebounceTime: number) { }
 
   ngOnInit() {
     this.host = <Sourcable>this._viewManager.getComponent(this._element);
