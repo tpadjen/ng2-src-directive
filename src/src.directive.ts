@@ -14,10 +14,11 @@ import {Sourcable} from './sourcable';
 import {Observable} from 'rxjs/Observable';
 import {Subject} from 'rxjs/Subject';
 import 'rxjs/add/observable/empty';
+import 'rxjs/add/observable/timer';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/distinctUntilChanged';
-import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/debounce';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/retry';
 import 'rxjs/add/operator/catch';
@@ -74,7 +75,7 @@ export class SrcDirective implements OnInit, OnDestroy {
       .filter(req => { return this._nonFiles(req); })
       .distinctUntilChanged()
       .do(req => { if (this.host.sourceLoading) this.host.sourceLoading(req.source); })
-      .debounceTime(this._firstRequest ? 0 : this.debounceTime)
+      .debounce(() => Observable.timer(this._firstRequest ? 0 : this.debounceTime))
       .do(() => this._firstRequest = false)
       .switchMap(req => { return this._fetchSrc(req); })
       .catch((error) => {
