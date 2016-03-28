@@ -40,6 +40,7 @@ export class SrcDirective implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.host = <Sourcable>this._viewManager.getComponent(this._element);
+    if (<any>this.host === this) this.host = this._element;
     if (this._sourceDebounceTime) this.debounceTime = this._sourceDebounceTime;
   }
 
