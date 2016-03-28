@@ -14,7 +14,7 @@ coverage
 *.map
 *.d.ts
 !make.js
-!bundles/*.js
+bundles/
 typings
 
 #################
