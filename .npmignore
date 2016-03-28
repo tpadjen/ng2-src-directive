@@ -13,6 +13,8 @@ coverage
 tests
 typings
 typings.json
+make.js
+tslint.json
 
 #################
 ## JetBrains
