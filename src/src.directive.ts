@@ -109,7 +109,7 @@ export class SrcDirective implements OnInit, OnDestroy {
   }
 
   _emptySources(source) {
-    return !(source === undefined || source == null);
+    return !(source === undefined || source === null || source === '');
   }
 
   _addExtensionMatches(source) {
