@@ -38,7 +38,7 @@
     "zone.js": ">= 0.5.10"
   },
   "devDependencies": {
-    "angular2": "2.0.0-beta.12",
+    "angular2": "2.0.0-beta.15",
     "commitizen": "~2.5.0",
     "cz-conventional-changelog": "~1.1.4",
     "es6-promise": "^3.0.2",
@@ -56,11 +56,11 @@
     "rimraf": "^2.5.2",
     "rxjs": "5.0.0-beta.2",
     "semantic-release": "~4.3.5",
-    "systemjs": "~0.19.24",
+    "systemjs": "~0.19.26",
     "systemjs-builder": "^0.15.13",
-    "typescript": "^1.z8.9",
-    "typings": "^0.6.8",
-    "zone.js": "^0.6.6"
+    "typescript": "^1.8.10",
+    "typings": "^0.7.12",
+    "zone.js": "^0.6.10"
   },
   "czConfig": {
     "path": "node_modules/cz-conventional-changelog"
