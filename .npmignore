@@ -10,11 +10,15 @@ npm-debug.log
 coverage
 *.ts
 !*.d.ts
-tests
 typings
 typings.json
 make.js
 tslint.json
+
+tests
+karma-test-shim.js
+karma.conf.js
+**/*.ktp.js
 
 #################
 ## JetBrains
