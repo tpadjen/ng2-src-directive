@@ -30,7 +30,11 @@ export var SourceDebounceTime: number = 300;
 export class SrcDirective implements OnInit, OnDestroy {
 
   host: Sourcable;
-  @Input() set src(source: string) { this.sourceChanged.next(source); }
+  _src: string;
+  @Input() set src(source: string) {
+    this._src = source;
+    this.sourceChanged.next(source);
+  }
 
   constructor(
     private _element: ElementRef,
@@ -45,6 +49,7 @@ export class SrcDirective implements OnInit, OnDestroy {
     if (this._sourceDebounceTime) this.debounceTime = this._sourceDebounceTime;
 
     this._handleSourceChanges();
+    if (this._src) this.sourceChanged.next(this._src);
   }
 
   /**
